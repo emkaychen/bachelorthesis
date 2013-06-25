@@ -200,7 +200,7 @@ void vLEDTask(void *pvParameters) {
         STM_EVAL_LEDToggle(LED6);
         STM_EVAL_LEDToggle(LED4);
         vTaskDelayUntil(&xLastWakeTime, xDelay);
-    }//test
+    }
 
 }
 
