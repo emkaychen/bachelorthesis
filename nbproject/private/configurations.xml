@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="89">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="STM32F4_Discovery_FreeRTOS_Simple_Demo">
+      <df name="FreeRTOS_Source">
+        <df name="include">
+          <in>FreeRTOS.h</in>
+          <in>StackMacros.h</in>
+          <in>croutine.h</in>
+          <in>list.h</in>
+          <in>mpu_wrappers.h</in>
+          <in>portable.h</in>
+          <in>projdefs.h</in>
+          <in>queue.h</in>
+          <in>semphr.h</in>
+          <in>task.h</in>
+          <in>timer_test.h</in>
+          <in>timers.h</in>
+        </df>
+        <df name="portable">
+          <df name="GCC">
+            <df name="ARM_CM4F">
+              <in>port.c</in>
+              <in>portmacro.h</in>
+            </df>
+          </df>
+          <df name="MemMang">
+            <in>heap_1.c</in>
+          </df>
+        </df>
+        <in>list.c</in>
+        <in>queue.c</in>
+        <in>tasks.c</in>
+        <in>timers.c</in>
+      </df>
+      <df name="inc">
+        <in>FreeRTOSConfig.h</in>
+        <in>stm32f4xx_conf.h</in>
+        <in>stm32f4xx_it.h</in>
+      </df>
+      <df name="Libraries">
+        <df name="CMSIS">
+          <df name="Include">
+            <in>arm_common_tables.h</in>
+            <in>arm_math.h</in>
+            <in>core_cm4.h</in>
+            <in>core_cm4_simd.h</in>
+            <in>core_cmFunc.h</in>
+            <in>core_cmInstr.h</in>
+          </df>
+        </df>
+        <df name="Device">
+          <df name="STM32F4xx">
+            <df name="Include">
+              <in>stm32f4xx.h</in>
+              <in>system_stm32f4xx.h</in>
+            </df>
+          </df>
+        </df>
+        <df name="STM32F4xx_StdPeriph_Driver">
+          <df name="inc">
+            <in>misc.h</in>
+            <in>stm32f4xx_adc.h</in>
+            <in>stm32f4xx_can.h</in>
+            <in>stm32f4xx_crc.h</in>
+            <in>stm32f4xx_cryp.h</in>
+            <in>stm32f4xx_dac.h</in>
+            <in>stm32f4xx_dbgmcu.h</in>
+            <in>stm32f4xx_dcmi.h</in>
+            <in>stm32f4xx_dma.h</in>
+            <in>stm32f4xx_exti.h</in>
+            <in>stm32f4xx_flash.h</in>
+            <in>stm32f4xx_fsmc.h</in>
+            <in>stm32f4xx_gpio.h</in>
+            <in>stm32f4xx_hash.h</in>
+            <in>stm32f4xx_i2c.h</in>
+            <in>stm32f4xx_iwdg.h</in>
+            <in>stm32f4xx_pwr.h</in>
+            <in>stm32f4xx_rcc.h</in>
+            <in>stm32f4xx_rng.h</in>
+            <in>stm32f4xx_rtc.h</in>
+            <in>stm32f4xx_sdio.h</in>
+            <in>stm32f4xx_spi.h</in>
+            <in>stm32f4xx_syscfg.h</in>
+            <in>stm32f4xx_tim.h</in>
+            <in>stm32f4xx_usart.h</in>
+            <in>stm32f4xx_wwdg.h</in>
+          </df>
+          <df name="src">
+            <in>misc.c</in>
+            <in>stm32f4xx_adc.c</in>
+            <in>stm32f4xx_can.c</in>
+            <in>stm32f4xx_crc.c</in>
+            <in>stm32f4xx_cryp.c</in>
+            <in>stm32f4xx_cryp_aes.c</in>
+            <in>stm32f4xx_cryp_des.c</in>
+            <in>stm32f4xx_cryp_tdes.c</in>
+            <in>stm32f4xx_dac.c</in>
+            <in>stm32f4xx_dbgmcu.c</in>
+            <in>stm32f4xx_dcmi.c</in>
+            <in>stm32f4xx_dma.c</in>
+            <in>stm32f4xx_exti.c</in>
+            <in>stm32f4xx_flash.c</in>
+            <in>stm32f4xx_fsmc.c</in>
+            <in>stm32f4xx_gpio.c</in>
+            <in>stm32f4xx_hash.c</in>
+            <in>stm32f4xx_hash_md5.c</in>
+            <in>stm32f4xx_hash_sha1.c</in>
+            <in>stm32f4xx_i2c.c</in>
+            <in>stm32f4xx_iwdg.c</in>
+            <in>stm32f4xx_pwr.c</in>
+            <in>stm32f4xx_rcc.c</in>
+            <in>stm32f4xx_rng.c</in>
+            <in>stm32f4xx_rtc.c</in>
+            <in>stm32f4xx_sdio.c</in>
+            <in>stm32f4xx_spi.c</in>
+            <in>stm32f4xx_syscfg.c</in>
+            <in>stm32f4xx_tim.c</in>
+            <in>stm32f4xx_usart.c</in>
+            <in>stm32f4xx_wwdg.c</in>
+          </df>
+        </df>
+      </df>
+      <df name="src">
+        <in>STM32F4-Discovery_callback.c</in>
+        <in>main.c</in>
+        <in>startup_stm32f4xx.s</in>
+        <in>stm32f4xx_it.c</in>
+        <in>system_stm32f4xx.c</in>
+        <in>tiny_printf.c</in>
+      </df>
+      <df name="Utilities">
+        <df name="STM32F4-Discovery">
+          <in>pdm_filter.h</in>
+          <in>stm32f4_discovery.c</in>
+          <in>stm32f4_discovery.h</in>
+          <in>stm32f4_discovery_audio_codec.c</in>
+          <in>stm32f4_discovery_audio_codec.h</in>
+          <in>stm32f4_discovery_lis302dl.c</in>
+          <in>stm32f4_discovery_lis302dl.h</in>
+        </df>
+      </df>
+    </df>
+  </logicalFolder>
+  <projectmakefile>makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <platform>2</platform>
+      </toolsSet>
+      <compile>
+        <compiledirpicklist>
+          <compiledirpicklistitem>${AUTO_FOLDER}</compiledirpicklistitem>
+          <compiledirpicklistitem>.</compiledirpicklistitem>
+        </compiledirpicklist>
+        <compiledir>${AUTO_FOLDER}</compiledir>
+        <compilecommandpicklist>
+          <compilecommandpicklistitem>${AUTO_COMPILE}</compilecommandpicklistitem>
+          <compilecommandpicklistitem>${MAKE} ${ITEM_NAME}.o</compilecommandpicklistitem>
+        </compilecommandpicklist>
+        <compilecommand>${AUTO_COMPILE}</compilecommand>
+      </compile>
+      <dbx_gdbdebugger version="1">
+        <gdb_pathmaps>
+        </gdb_pathmaps>
+        <gdb_interceptlist>
+          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
+        </gdb_interceptlist>
+        <gdb_options>
+          <DebugOptions>
+          </DebugOptions>
+        </gdb_options>
+        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
+      </dbx_gdbdebugger>
+      <nativedebugger version="1">
+        <engine>gdb</engine>
+      </nativedebugger>
+      <runprofile version="9">
+        <runcommandpicklist>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+        </runcommandpicklist>
+        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <rundir>.</rundir>
+        <buildfirst>false</buildfirst>
+        <terminal-type>0</terminal-type>
+        <remove-instrumentation>0</remove-instrumentation>
+        <environment>
+        </environment>
+      </runprofile>
+    </conf>
+  </confs>
+</configurationDescriptor>
