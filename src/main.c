@@ -147,7 +147,14 @@ to be available here. */
 #include "stm32f4_discovery.h"
 #include "stm32f4xx_adc.h"
 #include "stm32f4xx_tim.h"
-#include <stm32f4xx_usart.h>
+#include "stm32f4xx_usart.h"
+#include "stm32f4xx_exti.h"
+#include "stm32f4xx_syscfg.h"
+#include "general.h"
+
+#include "stm32f4xx_gpio.h"
+#include "pwrtrain_steering.h"
+#include "communication.h"
 /* Priorities at which the tasks are created.  The event semaphore task is
 given the maximum priority of ( configMAX_PRIORITIES - 1 ) to ensure it runs as
 soon as the semaphore is given. */
@@ -177,20 +184,12 @@ the queue empty. */
 static void prvSetupHardware(void);
 
 
-/*
- * The callback function assigned to the example software timer as described at
- * the top of this file.
- */
-static void vExampleTimerCallback(xTimerHandle xTimer);
 
 xTaskHandle xLEDHandle;
 
 void vLEDTask(void *pvParameters) {
     const portTickType xDelay = 2000 / portTICK_RATE_MS;
     portTickType xLastWakeTime = xTaskGetTickCount();
-
-    
-    
     STM_EVAL_LEDInit(LED6);
     STM_EVAL_LEDInit(LED4);
     STM_EVAL_LEDOff(LED6);
@@ -201,7 +200,6 @@ void vLEDTask(void *pvParameters) {
         STM_EVAL_LEDToggle(LED4);
         vTaskDelayUntil(&xLastWakeTime, xDelay);
     }
-
 }
 
 /* The semaphore (in this case binary) that is used by the FreeRTOS tick hook
@@ -216,48 +214,57 @@ static volatile uint32_t ulCountOfTimerCallbackExecutions = 0;
 static volatile uint32_t ulCountOfItemsReceivedOnQueue = 0;
 static volatile uint32_t ulCountOfReceivedSemaphores = 0;
 
+
+extern int printf(const char *format, ...);
+
 /*-----------------------------------------------------------*/
 
 void EXTI0_IRQHandler(void) //EXTI0 ISR
 {
-
+    printf("EXTI0_IRQ\n\r");
+    //USART_SendData(EVAL_COM1, 'a');
     if (EXTI_GetITStatus(EXTI_Line0) != RESET) //check if EXTI line is asserted
     {
         EXTI_ClearFlag(EXTI_Line0); //clear interrupt
         //Enter your code here
         STM_EVAL_LEDToggle(LED5);
+        SetTIM1Duty(4700);
     }
 }
+RC_STATE_T rc_state;
 
 int main(void) {
     /* Configure the system ready to run the demo.  The clock configuration
     can be done here if it was not done before main() was called. */
     prvSetupHardware();
-    STM_EVAL_LEDInit(LED5);
-
-    SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOA, EXTI_PinSource0);
-
-    NVIC_InitTypeDef NVIC_InitStructure;
-    EXTI_InitTypeDef EXTI_InitStructure;
-
-    EXTI_InitStructure.EXTI_Line = EXTI_Line0;
-    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
-    EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-    EXTI_Init(&EXTI_InitStructure);
-
-    NVIC_InitStructure.NVIC_IRQChannel = EXTI0_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x01;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
+    
+    rc_state.driving_direction = STOPPED;
+    rc_state.steering_direction = STEERING_DIR_NEUTRAL;
+//    STM_EVAL_LEDInit(LED5);
+//    
+//    NVIC_InitTypeDef NVIC_InitStructure;
+//    EXTI_InitTypeDef EXTI_InitStructure;
+//
+//    EXTI_InitStructure.EXTI_Line = EXTI_Line0;
+//    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+//    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
+//    EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+//    EXTI_Init(&EXTI_InitStructure);
+//
+//    NVIC_InitStructure.NVIC_IRQChannel = EXTI0_IRQn;
+//    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;
+//    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x01;
+//    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//    NVIC_Init(&NVIC_InitStructure);
+//    
+    initSerial();
+    initPWMOutput();
+    initPWMInput();
 
     xTaskCreate(&vLEDTask, (const signed char *) "LED Task", 200, NULL,
             1, &xLEDHandle);
 
 
-    
-    
     /* Start the tasks and timer running. */
     vTaskStartScheduler();
 
@@ -268,6 +275,7 @@ int main(void) {
     for more details.  http://www.freertos.org/a00111.html */
     for (;;);
 }
+
 
 /*-----------------------------------------------------------*/
 

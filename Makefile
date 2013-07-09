@@ -8,8 +8,10 @@ SOURCES += src/startup_stm32f4xx.s
 SOURCES += src/STM32F4-Discovery_callback.c
 SOURCES += src/stm32f4xx_it.c
 SOURCES += src/system_stm32f4xx.c
-SOURCES += src/tiny_printf.c
-
+#SOURCES += src/tiny_printf.c
+SOURCES += src/printf-stdarg.c
+SOURCES += src/pwrtrain_steering.c
+SOURCES += src/communication.c
 
 SOURCES += Utilities/STM32F4-Discovery/stm32f4_discovery.c
 

@@ -35,6 +35,9 @@
       </df>
       <df name="inc">
         <in>FreeRTOSConfig.h</in>
+        <in>communication.h</in>
+        <in>general.h</in>
+        <in>pwrtrain_steering.h</in>
         <in>stm32f4xx_conf.h</in>
         <in>stm32f4xx_it.h</in>
       </df>
@@ -123,7 +126,10 @@
       </df>
       <df name="src">
         <in>STM32F4-Discovery_callback.c</in>
+        <in>communication.c</in>
         <in>main.c</in>
+        <in>printf-stdarg.c</in>
+        <in>pwrtrain_steering.c</in>
         <in>startup_stm32f4xx.s</in>
         <in>stm32f4xx_it.c</in>
         <in>system_stm32f4xx.c</in>
@@ -169,6 +175,17 @@
           <buildCommand>${MAKE} -f Makefile</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
           <executablePath>build/STM32F4Discovery.elf</executablePath>
+          <cTool>
+            <incDir>
+              <pElem>inc</pElem>
+              <pElem>FreeRTOS_Source/include</pElem>
+              <pElem>FreeRTOS_Source/portable/GCC/ARM_CM4F</pElem>
+              <pElem>Libraries/CMSIS/Include</pElem>
+              <pElem>Libraries/Device/STM32F4xx/Include</pElem>
+              <pElem>Libraries/STM32F4xx_StdPeriph_Driver/inc</pElem>
+              <pElem>Utilities/STM32F4-Discovery</pElem>
+            </incDir>
+          </cTool>
         </makeTool>
       </makefileType>
       <item path="FreeRTOS_Source/include/FreeRTOS.h" ex="false" tool="3" flavor2="0">
@@ -672,6 +689,12 @@
       </folder>
       <item path="inc/FreeRTOSConfig.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/communication.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/general.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/pwrtrain_steering.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/stm32f4xx_conf.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/stm32f4xx_it.h" ex="false" tool="3" flavor2="0">
@@ -680,9 +703,15 @@
         <cTool>
         </cTool>
       </item>
+      <item path="src/communication.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="src/main.c" ex="false" tool="0" flavor2="2">
         <cTool>
         </cTool>
+      </item>
+      <item path="src/printf-stdarg.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/pwrtrain_steering.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/startup_stm32f4xx.s" ex="false" tool="4" flavor2="0">
       </item>
