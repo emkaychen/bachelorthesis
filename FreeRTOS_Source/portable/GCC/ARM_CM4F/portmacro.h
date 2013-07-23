@@ -2,24 +2,24 @@
     FreeRTOS V7.1.1 - Copyright (C) 2012 Real Time Engineers Ltd.
 	
 
-    ***************************************************************************
-     *                                                                       *
-     *    FreeRTOS tutorial books are available in pdf and paperback.        *
-     *    Complete, revised, and edited pdf reference manuals are also       *
-     *    available.                                                         *
-     *                                                                       *
-     *    Purchasing FreeRTOS documentation will not only help you, by       *
-     *    ensuring you get running as quickly as possible and with an        *
-     *    in-depth knowledge of how to use FreeRTOS, it will also help       *
-     *    the FreeRTOS project to continue with its mission of providing     *
-     *    professional grade, cross platform, de facto standard solutions    *
-     *    for microcontrollers - completely free of charge!                  *
-     *                                                                       *
-     *    >>> See http://www.FreeRTOS.org/Documentation for details. <<<     *
-     *                                                                       *
-     *    Thank you for using FreeRTOS, and thank you for your support!      *
-     *                                                                       *
-    ***************************************************************************
+ ***************************************************************************
+ *                                                                       *
+ *    FreeRTOS tutorial books are available in pdf and paperback.        *
+ *    Complete, revised, and edited pdf reference manuals are also       *
+ *    available.                                                         *
+ *                                                                       *
+ *    Purchasing FreeRTOS documentation will not only help you, by       *
+ *    ensuring you get running as quickly as possible and with an        *
+ *    in-depth knowledge of how to use FreeRTOS, it will also help       *
+ *    the FreeRTOS project to continue with its mission of providing     *
+ *    professional grade, cross platform, de facto standard solutions    *
+ *    for microcontrollers - completely free of charge!                  *
+ *                                                                       *
+ *    >>> See http://www.FreeRTOS.org/Documentation for details. <<<     *
+ *                                                                       *
+ *    Thank you for using FreeRTOS, and thank you for your support!      *
+ *                                                                       *
+ ***************************************************************************
 
 
     This file is part of the FreeRTOS distribution.
@@ -41,14 +41,14 @@
 
     1 tab == 4 spaces!
     
-    ***************************************************************************
-     *                                                                       *
-     *    Having a problem?  Start by reading the FAQ "My application does   *
-     *    not run, what could be wrong?                                      *
-     *                                                                       *
-     *    http://www.FreeRTOS.org/FAQHelp.html                               *
-     *                                                                       *
-    ***************************************************************************
+ ***************************************************************************
+ *                                                                       *
+ *    Having a problem?  Start by reading the FAQ "My application does   *
+ *    not run, what could be wrong?                                      *
+ *                                                                       *
+ *    http://www.FreeRTOS.org/FAQHelp.html                               *
+ *                                                                       *
+ ***************************************************************************
 
     
     http://www.FreeRTOS.org - Documentation, training, latest information, 
@@ -62,7 +62,7 @@
     the OpenRTOS brand: http://www.OpenRTOS.com.  High Integrity Systems also
     provide a safety engineered and independently SIL3 certified version under 
     the SafeRTOS brand: http://www.SafeRTOS.com.
-*/
+ */
 
 
 #ifndef PORTMACRO_H
@@ -72,17 +72,17 @@
 extern "C" {
 #endif
 
-/*-----------------------------------------------------------
- * Port specific definitions.  
- *
- * The settings in this file configure FreeRTOS correctly for the
- * given hardware and compiler.
- *
- * These settings should not be altered.
- *-----------------------------------------------------------
- */
+    /*-----------------------------------------------------------
+     * Port specific definitions.  
+     *
+     * The settings in this file configure FreeRTOS correctly for the
+     * given hardware and compiler.
+     *
+     * These settings should not be altered.
+     *-----------------------------------------------------------
+     */
 
-/* Type definitions. */
+    /* Type definitions. */
 #define portCHAR		char
 #define portFLOAT		float
 #define portDOUBLE		double
@@ -92,36 +92,36 @@ extern "C" {
 #define portBASE_TYPE	long
 
 #if( configUSE_16_BIT_TICKS == 1 )
-	typedef unsigned portSHORT portTickType;
-	#define portMAX_DELAY ( portTickType ) 0xffff
+    typedef unsigned portSHORT portTickType;
+#define portMAX_DELAY ( portTickType ) 0xffff
 #else
-	typedef unsigned portLONG portTickType;
-	#define portMAX_DELAY ( portTickType ) 0xffffffff
+    typedef unsigned portLONG portTickType;
+#define portMAX_DELAY ( portTickType ) 0xffffffff
 #endif
-/*-----------------------------------------------------------*/	
+    /*-----------------------------------------------------------*/
 
-/* Architecture specifics. */
+    /* Architecture specifics. */
 #define portSTACK_GROWTH			( -1 )
 #define portTICK_RATE_MS			( ( portTickType ) 1000 / configTICK_RATE_HZ )		
 #define portBYTE_ALIGNMENT			8
-/*-----------------------------------------------------------*/	
+    /*-----------------------------------------------------------*/
 
 
-/* Scheduler utilities. */
-extern void vPortYieldFromISR( void );
+    /* Scheduler utilities. */
+    extern void vPortYieldFromISR(void);
 
 #define portYIELD()					vPortYieldFromISR()
 
 #define portEND_SWITCHING_ISR( xSwitchRequired ) if( xSwitchRequired ) vPortYieldFromISR()
-/*-----------------------------------------------------------*/
+    /*-----------------------------------------------------------*/
 
 
-/* Critical section management. */
+    /* Critical section management. */
 
-/* 
- * Set basepri to portMAX_SYSCALL_INTERRUPT_PRIORITY without effecting other
- * registers.  r0 is clobbered.
- */ 
+    /* 
+     * Set basepri to portMAX_SYSCALL_INTERRUPT_PRIORITY without effecting other
+     * registers.  r0 is clobbered.
+     */
 #define portSET_INTERRUPT_MASK()						\
 	__asm volatile										\
 	(													\
@@ -129,11 +129,11 @@ extern void vPortYieldFromISR( void );
 		"	msr basepri, r0							\n" \
 		::"i"(configMAX_SYSCALL_INTERRUPT_PRIORITY):"r0"	\
 	)
-	
-/*
- * Set basepri back to 0 without effective other registers.
- * r0 is clobbered.
- */
+
+    /*
+     * Set basepri back to 0 without effective other registers.
+     * r0 is clobbered.
+     */
 #define portCLEAR_INTERRUPT_MASK()			\
 	__asm volatile							\
 	(										\
@@ -146,21 +146,21 @@ extern void vPortYieldFromISR( void );
 #define portCLEAR_INTERRUPT_MASK_FROM_ISR(x)	portCLEAR_INTERRUPT_MASK();(void)x
 
 
-extern void vPortEnterCritical( void );
-extern void vPortExitCritical( void );
+    extern void vPortEnterCritical(void);
+    extern void vPortExitCritical(void);
 
 #define portDISABLE_INTERRUPTS()	portSET_INTERRUPT_MASK()
 #define portENABLE_INTERRUPTS()		portCLEAR_INTERRUPT_MASK()
 #define portENTER_CRITICAL()		vPortEnterCritical()
 #define portEXIT_CRITICAL()			vPortExitCritical()
 
-/* There are an uneven number of items on the initial stack, so 
-portALIGNMENT_ASSERT_pxCurrentTCB() will trigger false positive asserts. */
+    /* There are an uneven number of items on the initial stack, so 
+    portALIGNMENT_ASSERT_pxCurrentTCB() will trigger false positive asserts. */
 #define portALIGNMENT_ASSERT_pxCurrentTCB ( void )
 
-/*-----------------------------------------------------------*/
+    /*-----------------------------------------------------------*/
 
-/* Task function macros as described on the FreeRTOS.org WEB site. */
+    /* Task function macros as described on the FreeRTOS.org WEB site. */
 #define portTASK_FUNCTION_PROTO( vFunction, pvParameters ) void vFunction( void *pvParameters )
 #define portTASK_FUNCTION( vFunction, pvParameters ) void vFunction( void *pvParameters )
 

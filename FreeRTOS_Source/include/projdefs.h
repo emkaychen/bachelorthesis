@@ -2,24 +2,24 @@
     FreeRTOS V7.1.1 - Copyright (C) 2012 Real Time Engineers Ltd.
 
 
-    ***************************************************************************
-     *                                                                       *
-     *    FreeRTOS tutorial books are available in pdf and paperback.        *
-     *    Complete, revised, and edited pdf reference manuals are also       *
-     *    available.                                                         *
-     *                                                                       *
-     *    Purchasing FreeRTOS documentation will not only help you, by       *
-     *    ensuring you get running as quickly as possible and with an        *
-     *    in-depth knowledge of how to use FreeRTOS, it will also help       *
-     *    the FreeRTOS project to continue with its mission of providing     *
-     *    professional grade, cross platform, de facto standard solutions    *
-     *    for microcontrollers - completely free of charge!                  *
-     *                                                                       *
-     *    >>> See http://www.FreeRTOS.org/Documentation for details. <<<     *
-     *                                                                       *
-     *    Thank you for using FreeRTOS, and thank you for your support!      *
-     *                                                                       *
-    ***************************************************************************
+ ***************************************************************************
+ *                                                                       *
+ *    FreeRTOS tutorial books are available in pdf and paperback.        *
+ *    Complete, revised, and edited pdf reference manuals are also       *
+ *    available.                                                         *
+ *                                                                       *
+ *    Purchasing FreeRTOS documentation will not only help you, by       *
+ *    ensuring you get running as quickly as possible and with an        *
+ *    in-depth knowledge of how to use FreeRTOS, it will also help       *
+ *    the FreeRTOS project to continue with its mission of providing     *
+ *    professional grade, cross platform, de facto standard solutions    *
+ *    for microcontrollers - completely free of charge!                  *
+ *                                                                       *
+ *    >>> See http://www.FreeRTOS.org/Documentation for details. <<<     *
+ *                                                                       *
+ *    Thank you for using FreeRTOS, and thank you for your support!      *
+ *                                                                       *
+ ***************************************************************************
 
 
     This file is part of the FreeRTOS distribution.
@@ -41,14 +41,14 @@
 
     1 tab == 4 spaces!
     
-    ***************************************************************************
-     *                                                                       *
-     *    Having a problem?  Start by reading the FAQ "My application does   *
-     *    not run, what could be wrong?                                      *
-     *                                                                       *
-     *    http://www.FreeRTOS.org/FAQHelp.html                               *
-     *                                                                       *
-    ***************************************************************************
+ ***************************************************************************
+ *                                                                       *
+ *    Having a problem?  Start by reading the FAQ "My application does   *
+ *    not run, what could be wrong?                                      *
+ *                                                                       *
+ *    http://www.FreeRTOS.org/FAQHelp.html                               *
+ *                                                                       *
+ ***************************************************************************
 
     
     http://www.FreeRTOS.org - Documentation, training, latest information, 
@@ -62,13 +62,13 @@
     the OpenRTOS brand: http://www.OpenRTOS.com.  High Integrity Systems also
     provide a safety engineered and independently SIL3 certified version under 
     the SafeRTOS brand: http://www.SafeRTOS.com.
-*/
+ */
 
 #ifndef PROJDEFS_H
 #define PROJDEFS_H
 
 /* Defines the prototype to which task functions must conform. */
-typedef void (*pdTASK_CODE)( void * );
+typedef void (*pdTASK_CODE)(void *);
 
 #define pdTRUE		( 1 )
 #define pdFALSE		( 0 )

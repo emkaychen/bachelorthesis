@@ -7,6 +7,7 @@ TIM_OCInitTypeDef TIM_OCInitStructure;
 GPIO_InitTypeDef GPIO_InitStructure;
 NVIC_InitTypeDef NVIC_InitStructure;
 TIM_ICInitTypeDef TIM_ICInitStructure;
+
 /**
  * @brief @brief Initialisiert den PWM Input für die Lenkung und den Antrieb.
  */
@@ -19,8 +20,8 @@ void initPWMInput() {
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
 
     //GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_10;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
     GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
@@ -37,7 +38,7 @@ void initPWMInput() {
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 
-    
+
 
     TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
     //TIM_ICInitStructure.TIM_Channel = TIM_Channel_3;
@@ -61,10 +62,10 @@ void initPWMInput() {
     /* Enable the CC2 Interrupt Request */
     //TIM_ITConfig(TIM2, TIM_IT_CC2, ENABLE);
     TIM_ITConfig(TIM2, TIM_IT_CC2, ENABLE);
-    
-    
-    
-    
+
+
+
+
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, DISABLE);
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);
 
@@ -150,7 +151,7 @@ void initPWMOutput() {
     TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
     TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
     TIM_OCInitStructure.TIM_OutputNState = TIM_OutputNState_Enable;
-    TIM_OCInitStructure.TIM_Pulse = Channel1Pulse;
+    TIM_OCInitStructure.TIM_Pulse = STEERING_POS_NEUTRAL; //Channel1Pulse;
     TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
     TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCNPolarity_High;
     TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Set;
@@ -216,46 +217,127 @@ void initPWMOutput() {
     //    TIM_ITConfig(TIM4, TIM_IT_CC2, ENABLE);
 }
 
-__IO uint32_t value = 0, dir = 0; // 0 = neutral, 1 = links, 2 = rechts
+__IO uint32_t remote_steering_value, remote_driving_value;
+uint8_t activity_counter = 5;
+
+void vSteeringTask(void *pvParameters) {
+    printf("Steering Task Started\n\r");
+    const portTickType xDelay = TASK_STEERING_PERIOD / portTICK_RATE_MS;
+    portTickType xLastWakeTime = xTaskGetTickCount();
+
+    for (;;) {
+        if (rc_state.remote == REMOTE_AKTIVE && activity_counter == 0) {
+            rc_state.remote = REMOTE_INAKTIVE;
+            printf("REMOTE INAKTIVE\n\r");
+        }
+
+        if (rc_state.remote == REMOTE_AKTIVE) {
+            activity_counter--;
+            rc_state.steering_direction = getSteeringDir();
+            rc_state.steering_value = getSteeringVal();
+            setStreeringValue(rc_state.steering_value);
+            //printf("remote value: %d\t\tsteeringVal: %d \n\r", remote_steering_value, rc_state.steering_value);
+        }
+
+        vTaskDelayUntil(&xLastWakeTime, xDelay);
+    }
+}
+
+static uint16_t getSteeringVal() {
+    if (rc_state.steering_direction == STEERING_DIR_NEUTRAL) {
+        return STEERING_POS_NEUTRAL;
+    } else if (rc_state.steering_direction == STEERING_DIR_LEFT) {
+        return STEERING_POS_NEUTRAL - 2 * (STEERING_REMOTE_MID - remote_steering_value);
+    } else if (rc_state.steering_direction == STEERING_DIR_RIGHT) {
+        return STEERING_POS_NEUTRAL + 2 * (remote_steering_value - STEERING_REMOTE_MID);
+    }
+}
+
+static uint8_t getSteeringDir() {
+    if (remote_steering_value > STEERING_REMOTE_LEFT && remote_steering_value < STEERING_REMOTE_RIGHT) {
+        return STEERING_DIR_NEUTRAL;
+    } else if (remote_steering_value > STEERING_REMOTE_RIGHT) {
+        return STEERING_DIR_RIGHT;
+    } else if (remote_steering_value < STEERING_REMOTE_LEFT) {
+        return STEERING_DIR_LEFT;
+    }
+}
+
+void setStreeringValue(uint16_t value) {
+    if (value < STEERING_POS_LEFT_MAX) {
+        value = STEERING_POS_LEFT_MAX;
+    } else if (value > STEERING_POS_RIGHT_MAX) {
+        value = STEERING_POS_RIGHT_MAX;
+    }
+    TIM1->CCR3 = value;
+}
+
+
+//Fernsteuerung
 
 void TIM2_IRQHandler(void) {
     TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
-    value = (TIM_GetCapture1(TIM2) / 100);
-
-    if (value > 1280 && value < 1310) {
-        rc_state.steering_direction = STEERING_DIR_NEUTRAL;
-    } else if (value > 1310) {
-        rc_state.steering_direction = STEERING_DIR_RIGHT;
-    } else if (value < 1280) {
-        rc_state.steering_direction = STEERING_DIR_LEFT;
-    }
+    remote_steering_value = (TIM_GetCapture1(TIM2) / 100);
+    rc_state.remote = REMOTE_AKTIVE;
+    activity_counter = 5;
+    //printf("IRQ\n\r");
     //printf("TIM2\tDutyCycle: %d\tSteering Direction: %d\n\r", value, rc_state.steering_direction);
-    if(rc_state.steering_direction == STEERING_DIR_NEUTRAL){
-        SetTIM1Duty(NEUTRAL_POS);
-    }else if(rc_state.steering_direction == STEERING_DIR_LEFT){
-        printf("DutyCycle: %d\tlinks: %d \n\r", value,(3732-2*(1280-value)));
-        SetTIM1Duty(3732-2*(1280-value));
-    }else if(rc_state.steering_direction == STEERING_DIR_RIGHT){
-        printf("DutyCycle: %d\trechts: %d \n\r", value,(3832+2*(value-1310)));
-        SetTIM1Duty(3832+2*(value-1310));
-    }
 }
 
 __IO uint32_t value2 = 0;
 
+void vDrivingTask(void *pvParameters) {
+    printf("Driving Task Started\n\r");
+    const portTickType xDelay = TASK_DRIVING_PERIOD / portTICK_RATE_MS;
+    portTickType xLastWakeTime = xTaskGetTickCount();
+
+    for (;;) {
+
+        if (rc_state.remote == REMOTE_AKTIVE) {
+
+            rc_state.driving_direction = getDrivingDir();
+            rc_state.driving_value = getDrivingVal();
+            setDrivingValue(rc_state.driving_value);
+            printf("DRIVING: remote: %d\t\t setVal: %d \n\r", remote_driving_value, rc_state.driving_value);
+        }
+
+        vTaskDelayUntil(&xLastWakeTime, xDelay);
+    }
+}
+
+static uint16_t getDrivingVal() {
+    if (rc_state.driving_direction == PWRTRAIN_DIR_STOPPED) {
+        return PWRTRAIN_POS_NEUTRAL;
+    } else if (rc_state.driving_direction == PWRTRAIN_DIR_BACKWARDS) {
+        return PWRTRAIN_POS_NEUTRAL - 2 * (PWRTRAIN_REMOTE_MID - remote_driving_value);
+    } else if (rc_state.driving_direction == PWRTRAIN_DIR_FORWARDS) {
+        return PWRTRAIN_POS_NEUTRAL + 2 * (remote_driving_value - PWRTRAIN_REMOTE_MID);
+    }
+}
+
+static uint8_t getDrivingDir() {
+    if (remote_driving_value > PWRTRAIN_REMOTE_BACKWARDS && remote_driving_value < PWRTRAIN_REMOTE_FORWARDS) {
+        return PWRTRAIN_DIR_STOPPED;
+    } else if (remote_driving_value > PWRTRAIN_REMOTE_FORWARDS) {
+        return PWRTRAIN_DIR_FORWARDS;
+    } else if (remote_driving_value < PWRTRAIN_REMOTE_BACKWARDS) {
+        return PWRTRAIN_DIR_BACKWARDS;
+    }
+}
+
+void setDrivingValue(uint16_t value) {
+    if (value < PWRTRAIN_POS_BACKWARDS_MAX) {
+        value = PWRTRAIN_POS_BACKWARDS_MAX;
+    } else if (value > PWRTRAIN_POS_FORWARDS_MAX) {
+        value = PWRTRAIN_POS_FORWARDS_MAX;
+    }
+    TIM1->CCR1 = value;
+}
+
+//Gas
+
 void TIM5_IRQHandler(void) {
     TIM_ClearITPendingBit(TIM5, TIM_IT_CC2);
-    value2 = (TIM_GetCapture2(TIM5) / 100);
-
-    
-    //printf("TIM5\tDutyCycle: %d\tDriving Direction: %d\n\r", value2, rc_state.driving_direction);
-    /*if(dir == 0){
-        SetTIM1Duty(3732);
-    }else if(dir == 1){
-        printf("DutyCycle: %d\tlinks: %d \n\r", value,(3732-3*((65500-value) / 100)));
-        SetTIM1Duty(3732-2*((65500-value) / 100));
-    }else if(dir == 2){
-        printf("DutyCycle: %d\trechts: %d \n\r", value,(3732+3*(value / 100)));
-        SetTIM1Duty(3732+2*(value / 100));
-    }*/
+    remote_driving_value = (TIM_GetCapture2(TIM5) / 100);
+    //printf("Driving Value: %d\n\r",remote_driving_value);
 }

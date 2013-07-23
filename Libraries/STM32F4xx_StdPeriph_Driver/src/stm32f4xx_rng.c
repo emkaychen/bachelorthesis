@@ -1,70 +1,70 @@
 /**
-  ******************************************************************************
-  * @file    stm32f4xx_rng.c
-  * @author  MCD Application Team
-  * @version V1.0.2
-  * @date    05-March-2012
-    * @brief This file provides firmware functions to manage the following 
-  *          functionalities of the Random Number Generator (RNG) peripheral:           
-  *           - Initialization and Configuration 
-  *           - Get 32 bit Random number      
-  *           - Interrupts and flags management       
-  *         
-  *  @verbatim
-  *                               
-  *          ===================================================================      
-  *                                   How to use this driver
-  *          ===================================================================          
-  *          1. Enable The RNG controller clock using 
-  *            RCC_AHB2PeriphClockCmd(RCC_AHB2Periph_RNG, ENABLE) function.
-  *              
-  *          2. Activate the RNG peripheral using RNG_Cmd() function.
-  *          
-  *          3. Wait until the 32 bit Random number Generator contains a valid 
-  *            random data (using polling/interrupt mode). For more details, 
-  *            refer to "Interrupts and flags management functions" module 
-  *            description.
-  *           
-  *          4. Get the 32 bit Random number using RNG_GetRandomNumber() function
-  *          
-  *          5. To get another 32 bit Random number, go to step 3.       
-  *
-  *         
-  *              
-  *  @endverbatim
-  *         
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
-  *
-  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
-  * You may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at:
-  *
-  *        http://www.st.com/software_license_agreement_liberty_v2
-  *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file    stm32f4xx_rng.c
+ * @author  MCD Application Team
+ * @version V1.0.2
+ * @date    05-March-2012
+ * @brief This file provides firmware functions to manage the following 
+ *          functionalities of the Random Number Generator (RNG) peripheral:           
+ *           - Initialization and Configuration 
+ *           - Get 32 bit Random number      
+ *           - Interrupts and flags management       
+ *         
+ *  @verbatim
+ *                               
+ *          ===================================================================      
+ *                                   How to use this driver
+ *          ===================================================================          
+ *          1. Enable The RNG controller clock using 
+ *            RCC_AHB2PeriphClockCmd(RCC_AHB2Periph_RNG, ENABLE) function.
+ *              
+ *          2. Activate the RNG peripheral using RNG_Cmd() function.
+ *          
+ *          3. Wait until the 32 bit Random number Generator contains a valid 
+ *            random data (using polling/interrupt mode). For more details, 
+ *            refer to "Interrupts and flags management functions" module 
+ *            description.
+ *           
+ *          4. Get the 32 bit Random number using RNG_GetRandomNumber() function
+ *          
+ *          5. To get another 32 bit Random number, go to step 3.       
+ *
+ *         
+ *              
+ *  @endverbatim
+ *         
+ ******************************************************************************
+ * @attention
+ *
+ * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+ *
+ * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *
+ *        http://www.st.com/software_license_agreement_liberty_v2
+ *
+ * Unless required by applicable law or agreed to in writing, software 
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************
+ */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_rng.h"
 #include "stm32f4xx_rcc.h"
 
 /** @addtogroup STM32F4xx_StdPeriph_Driver
-  * @{
-  */
+ * @{
+ */
 
 /** @defgroup RNG 
-  * @brief RNG driver modules
-  * @{
-  */ 
+ * @brief RNG driver modules
+ * @{
+ */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -74,8 +74,8 @@
 /* Private functions ---------------------------------------------------------*/
 
 /** @defgroup RNG_Private_Functions
-  * @{
-  */ 
+ * @{
+ */
 
 /** @defgroup RNG_Group1 Initialization and Configuration functions
  *  @brief    Initialization and Configuration functions 
@@ -89,48 +89,43 @@
    - Enable or disable the RNG peripheral
    
 @endverbatim
-  * @{
-  */
+ * @{
+ */
 
 /**
-  * @brief  Deinitializes the RNG peripheral registers to their default reset values.
-  * @param  None
-  * @retval None
-  */
-void RNG_DeInit(void)
-{
-  /* Enable RNG reset state */
-  RCC_AHB2PeriphResetCmd(RCC_AHB2Periph_RNG, ENABLE);
+ * @brief  Deinitializes the RNG peripheral registers to their default reset values.
+ * @param  None
+ * @retval None
+ */
+void RNG_DeInit(void) {
+    /* Enable RNG reset state */
+    RCC_AHB2PeriphResetCmd(RCC_AHB2Periph_RNG, ENABLE);
 
-  /* Release RNG from reset state */
-  RCC_AHB2PeriphResetCmd(RCC_AHB2Periph_RNG, DISABLE);
+    /* Release RNG from reset state */
+    RCC_AHB2PeriphResetCmd(RCC_AHB2Periph_RNG, DISABLE);
 }
 
 /**
-  * @brief  Enables or disables the RNG peripheral.
-  * @param  NewState: new state of the RNG peripheral.
-  *          This parameter can be: ENABLE or DISABLE.
-  * @retval None
-  */
-void RNG_Cmd(FunctionalState NewState)
-{
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+ * @brief  Enables or disables the RNG peripheral.
+ * @param  NewState: new state of the RNG peripheral.
+ *          This parameter can be: ENABLE or DISABLE.
+ * @retval None
+ */
+void RNG_Cmd(FunctionalState NewState) {
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the RNG */
-    RNG->CR |= RNG_CR_RNGEN;
-  }
-  else
-  {
-    /* Disable the RNG */
-    RNG->CR &= ~RNG_CR_RNGEN;
-  }
+    if (NewState != DISABLE) {
+        /* Enable the RNG */
+        RNG->CR |= RNG_CR_RNGEN;
+    } else {
+        /* Disable the RNG */
+        RNG->CR &= ~RNG_CR_RNGEN;
+    }
 }
 /**
-  * @}
-  */
+ * @}
+ */
 
 /** @defgroup RNG_Group2 Get 32 bit Random number function
  *  @brief    Get 32 bit Random number function 
@@ -146,44 +141,42 @@ void RNG_Cmd(FunctionalState NewState)
          using RNG_GetFlagStatus(RNG_FLAG_DRDY) function. 
    
 @endverbatim
-  * @{
-  */
-
+ * @{
+ */
 
 /**
-  * @brief  Returns a 32-bit random number.
-  *   
-  * @note   Before to call this function you have to wait till DRDY (data ready)
-  *         flag is set, using RNG_GetFlagStatus(RNG_FLAG_DRDY) function.
-  * @note   Each time the the Random number data is read (using RNG_GetRandomNumber()
-  *         function), the RNG_FLAG_DRDY flag is automatically cleared.
-  * @note   In the case of a seed error, the generation of random numbers is 
-  *         interrupted for as long as the SECS bit is '1'. If a number is 
-  *         available in the RNG_DR register, it must not be used because it may 
-  *         not have enough entropy. In this case, it is recommended to clear the 
-  *         SEIS bit(using RNG_ClearFlag(RNG_FLAG_SECS) function), then disable 
-  *         and enable the RNG peripheral (using RNG_Cmd() function) to 
-  *         reinitialize and restart the RNG.
-  * @note   In the case of a clock error, the RNG is no more able to generate 
-  *         random numbers because the PLL48CLK clock is not correct. User have 
-  *         to check that the clock controller is correctly configured to provide
-  *         the RNG clock and clear the CEIS bit (using RNG_ClearFlag(RNG_FLAG_CECS) 
-  *         function) . The clock error has no impact on the previously generated 
-  *         random numbers, and the RNG_DR register contents can be used.
-  *         
-  * @param  None
-  * @retval 32-bit random number.
-  */
-uint32_t RNG_GetRandomNumber(void)
-{
-  /* Return the 32 bit random number from the DR register */
-  return RNG->DR;
+ * @brief  Returns a 32-bit random number.
+ *   
+ * @note   Before to call this function you have to wait till DRDY (data ready)
+ *         flag is set, using RNG_GetFlagStatus(RNG_FLAG_DRDY) function.
+ * @note   Each time the the Random number data is read (using RNG_GetRandomNumber()
+ *         function), the RNG_FLAG_DRDY flag is automatically cleared.
+ * @note   In the case of a seed error, the generation of random numbers is 
+ *         interrupted for as long as the SECS bit is '1'. If a number is 
+ *         available in the RNG_DR register, it must not be used because it may 
+ *         not have enough entropy. In this case, it is recommended to clear the 
+ *         SEIS bit(using RNG_ClearFlag(RNG_FLAG_SECS) function), then disable 
+ *         and enable the RNG peripheral (using RNG_Cmd() function) to 
+ *         reinitialize and restart the RNG.
+ * @note   In the case of a clock error, the RNG is no more able to generate 
+ *         random numbers because the PLL48CLK clock is not correct. User have 
+ *         to check that the clock controller is correctly configured to provide
+ *         the RNG clock and clear the CEIS bit (using RNG_ClearFlag(RNG_FLAG_CECS) 
+ *         function) . The clock error has no impact on the previously generated 
+ *         random numbers, and the RNG_DR register contents can be used.
+ *         
+ * @param  None
+ * @retval 32-bit random number.
+ */
+uint32_t RNG_GetRandomNumber(void) {
+    /* Return the 32 bit random number from the DR register */
+    return RNG->DR;
 }
 
 
 /**
-  * @}
-  */
+ * @}
+ */
 
 /** @defgroup RNG_Group3 Interrupts and flags management functions
  *  @brief   Interrupts and flags management functions
@@ -254,152 +247,136 @@ uint32_t RNG_GetRandomNumber(void)
   
 
 @endverbatim
-  * @{
-  */ 
+ * @{
+ */
 
 /**
-  * @brief  Enables or disables the RNG interrupt.
-  * @note   The RNG provides 3 interrupt sources,
-  *           - Computed data is ready event (DRDY), and           
-  *           - Seed error Interrupt (SEI) and 
-  *           - Clock error Interrupt (CEI), 
-  *         all these interrupts sources are enabled by setting the IE bit in 
-  *         CR register. However, each interrupt have its specific status bit
-  *         (see RNG_GetITStatus() function) and clear bit except the DRDY event
-  *         (see RNG_ClearITPendingBit() function).
-  * @param  NewState: new state of the RNG interrupt.
-  *          This parameter can be: ENABLE or DISABLE.
-  * @retval None
-  */
-void RNG_ITConfig(FunctionalState NewState)
-{
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+ * @brief  Enables or disables the RNG interrupt.
+ * @note   The RNG provides 3 interrupt sources,
+ *           - Computed data is ready event (DRDY), and           
+ *           - Seed error Interrupt (SEI) and 
+ *           - Clock error Interrupt (CEI), 
+ *         all these interrupts sources are enabled by setting the IE bit in 
+ *         CR register. However, each interrupt have its specific status bit
+ *         (see RNG_GetITStatus() function) and clear bit except the DRDY event
+ *         (see RNG_ClearITPendingBit() function).
+ * @param  NewState: new state of the RNG interrupt.
+ *          This parameter can be: ENABLE or DISABLE.
+ * @retval None
+ */
+void RNG_ITConfig(FunctionalState NewState) {
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the RNG interrupt */
-    RNG->CR |= RNG_CR_IE;
-  }
-  else
-  {
-    /* Disable the RNG interrupt */
-    RNG->CR &= ~RNG_CR_IE;
-  }
+    if (NewState != DISABLE) {
+        /* Enable the RNG interrupt */
+        RNG->CR |= RNG_CR_IE;
+    } else {
+        /* Disable the RNG interrupt */
+        RNG->CR &= ~RNG_CR_IE;
+    }
 }
 
 /**
-  * @brief  Checks whether the specified RNG flag is set or not.
-  * @param  RNG_FLAG: specifies the RNG flag to check.
-  *          This parameter can be one of the following values:
-  *            @arg RNG_FLAG_DRDY: Data Ready flag.
-  *            @arg RNG_FLAG_CECS: Clock Error Current flag.
-  *            @arg RNG_FLAG_SECS: Seed Error Current flag.
-  * @retval The new state of RNG_FLAG (SET or RESET).
-  */
-FlagStatus RNG_GetFlagStatus(uint8_t RNG_FLAG)
-{
-  FlagStatus bitstatus = RESET;
-  /* Check the parameters */
-  assert_param(IS_RNG_GET_FLAG(RNG_FLAG));
+ * @brief  Checks whether the specified RNG flag is set or not.
+ * @param  RNG_FLAG: specifies the RNG flag to check.
+ *          This parameter can be one of the following values:
+ *            @arg RNG_FLAG_DRDY: Data Ready flag.
+ *            @arg RNG_FLAG_CECS: Clock Error Current flag.
+ *            @arg RNG_FLAG_SECS: Seed Error Current flag.
+ * @retval The new state of RNG_FLAG (SET or RESET).
+ */
+FlagStatus RNG_GetFlagStatus(uint8_t RNG_FLAG) {
+    FlagStatus bitstatus = RESET;
+    /* Check the parameters */
+    assert_param(IS_RNG_GET_FLAG(RNG_FLAG));
 
-  /* Check the status of the specified RNG flag */
-  if ((RNG->SR & RNG_FLAG) != (uint8_t)RESET)
-  {
-    /* RNG_FLAG is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* RNG_FLAG is reset */
-    bitstatus = RESET;
-  }
-  /* Return the RNG_FLAG status */
-  return  bitstatus;
-}
-
-
-/**
-  * @brief  Clears the RNG flags.
-  * @param  RNG_FLAG: specifies the flag to clear. 
-  *          This parameter can be any combination of the following values:
-  *            @arg RNG_FLAG_CECS: Clock Error Current flag.
-  *            @arg RNG_FLAG_SECS: Seed Error Current flag.
-  * @note   RNG_FLAG_DRDY can not be cleared by RNG_ClearFlag() function. 
-  *         This flag is cleared only by reading the Random number data (using 
-  *         RNG_GetRandomNumber() function).                           
-  * @retval None
-  */
-void RNG_ClearFlag(uint8_t RNG_FLAG)
-{
-  /* Check the parameters */
-  assert_param(IS_RNG_CLEAR_FLAG(RNG_FLAG));
-  /* Clear the selected RNG flags */
-  RNG->SR = ~(uint32_t)(((uint32_t)RNG_FLAG) << 4);
+    /* Check the status of the specified RNG flag */
+    if ((RNG->SR & RNG_FLAG) != (uint8_t) RESET) {
+        /* RNG_FLAG is set */
+        bitstatus = SET;
+    } else {
+        /* RNG_FLAG is reset */
+        bitstatus = RESET;
+    }
+    /* Return the RNG_FLAG status */
+    return bitstatus;
 }
 
 /**
-  * @brief  Checks whether the specified RNG interrupt has occurred or not.
-  * @param  RNG_IT: specifies the RNG interrupt source to check.
-  *          This parameter can be one of the following values:
-  *            @arg RNG_IT_CEI: Clock Error Interrupt.
-  *            @arg RNG_IT_SEI: Seed Error Interrupt.                   
-  * @retval The new state of RNG_IT (SET or RESET).
-  */
-ITStatus RNG_GetITStatus(uint8_t RNG_IT)
-{
-  ITStatus bitstatus = RESET;
-  /* Check the parameters */
-  assert_param(IS_RNG_GET_IT(RNG_IT));
-
-  /* Check the status of the specified RNG interrupt */
-  if ((RNG->SR & RNG_IT) != (uint8_t)RESET)
-  {
-    /* RNG_IT is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* RNG_IT is reset */
-    bitstatus = RESET;
-  }
-  /* Return the RNG_IT status */
-  return bitstatus;
+ * @brief  Clears the RNG flags.
+ * @param  RNG_FLAG: specifies the flag to clear. 
+ *          This parameter can be any combination of the following values:
+ *            @arg RNG_FLAG_CECS: Clock Error Current flag.
+ *            @arg RNG_FLAG_SECS: Seed Error Current flag.
+ * @note   RNG_FLAG_DRDY can not be cleared by RNG_ClearFlag() function. 
+ *         This flag is cleared only by reading the Random number data (using 
+ *         RNG_GetRandomNumber() function).                           
+ * @retval None
+ */
+void RNG_ClearFlag(uint8_t RNG_FLAG) {
+    /* Check the parameters */
+    assert_param(IS_RNG_CLEAR_FLAG(RNG_FLAG));
+    /* Clear the selected RNG flags */
+    RNG->SR = ~(uint32_t) (((uint32_t) RNG_FLAG) << 4);
 }
 
+/**
+ * @brief  Checks whether the specified RNG interrupt has occurred or not.
+ * @param  RNG_IT: specifies the RNG interrupt source to check.
+ *          This parameter can be one of the following values:
+ *            @arg RNG_IT_CEI: Clock Error Interrupt.
+ *            @arg RNG_IT_SEI: Seed Error Interrupt.                   
+ * @retval The new state of RNG_IT (SET or RESET).
+ */
+ITStatus RNG_GetITStatus(uint8_t RNG_IT) {
+    ITStatus bitstatus = RESET;
+    /* Check the parameters */
+    assert_param(IS_RNG_GET_IT(RNG_IT));
+
+    /* Check the status of the specified RNG interrupt */
+    if ((RNG->SR & RNG_IT) != (uint8_t) RESET) {
+        /* RNG_IT is set */
+        bitstatus = SET;
+    } else {
+        /* RNG_IT is reset */
+        bitstatus = RESET;
+    }
+    /* Return the RNG_IT status */
+    return bitstatus;
+}
 
 /**
-  * @brief  Clears the RNG interrupt pending bit(s).
-  * @param  RNG_IT: specifies the RNG interrupt pending bit(s) to clear.
-  *          This parameter can be any combination of the following values:
-  *            @arg RNG_IT_CEI: Clock Error Interrupt.
-  *            @arg RNG_IT_SEI: Seed Error Interrupt.
-  * @retval None
-  */
-void RNG_ClearITPendingBit(uint8_t RNG_IT)
-{
-  /* Check the parameters */
-  assert_param(IS_RNG_IT(RNG_IT));
+ * @brief  Clears the RNG interrupt pending bit(s).
+ * @param  RNG_IT: specifies the RNG interrupt pending bit(s) to clear.
+ *          This parameter can be any combination of the following values:
+ *            @arg RNG_IT_CEI: Clock Error Interrupt.
+ *            @arg RNG_IT_SEI: Seed Error Interrupt.
+ * @retval None
+ */
+void RNG_ClearITPendingBit(uint8_t RNG_IT) {
+    /* Check the parameters */
+    assert_param(IS_RNG_IT(RNG_IT));
 
-  /* Clear the selected RNG interrupt pending bit */
-  RNG->SR = (uint8_t)~RNG_IT;
+    /* Clear the selected RNG interrupt pending bit */
+    RNG->SR = (uint8_t) ~RNG_IT;
 }
 /**
-  * @}
-  */ 
-  
-/**
-  * @}
-  */ 
+ * @}
+ */
 
 /**
-  * @}
-  */ 
+ * @}
+ */
+
+/**
+ * @}
+ */
 
 
 /**
-  * @}
-  */ 
+ * @}
+ */
 
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

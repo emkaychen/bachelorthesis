@@ -1,30 +1,30 @@
 /**
-  ******************************************************************************
-  * @file    stm32f4_discovery_audio_codec.h
-  * @author  MCD Application Team
-  * @version V1.1.1
-  * @date    14-May-2012
-  * @brief   This file contains all the functions prototypes for the 
-  *          stm32f4_discovery_audio_codec.c driver.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
-  *
-  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
-  * You may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at:
-  *
-  *        http://www.st.com/software_license_agreement_liberty_v2
-  *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  *
-  ******************************************************************************  
-  */
+ ******************************************************************************
+ * @file    stm32f4_discovery_audio_codec.h
+ * @author  MCD Application Team
+ * @version V1.1.1
+ * @date    14-May-2012
+ * @brief   This file contains all the functions prototypes for the 
+ *          stm32f4_discovery_audio_codec.c driver.
+ ******************************************************************************
+ * @attention
+ *
+ * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+ *
+ * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *
+ *        http://www.st.com/software_license_agreement_liberty_v2
+ *
+ * Unless required by applicable law or agreed to in writing, software 
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************  
+ */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F4_DISCOVERY_AUDIOCODEC_H
@@ -35,26 +35,26 @@
 #include "stm32f4xx_gpio.h"
 
 /** @addtogroup Utilities
-  * @{
-  */
+ * @{
+ */
 
 
 /** @addtogroup STM32F4_DISCOVERY
-  * @{
-  */
-    
+ * @{
+ */
+
 /** @defgroup STM32F4_DISCOVERY_AUDIO_CODEC 
-  * @{
-  */    
+ * @{
+ */
 
 
 /** @defgroup STM32F4_DISCOVERY_AUDIO_CODEC_Exported_Types
-  * @{
-  */
+ * @{
+ */
 
 /** @defgroup STM32F4_DISCOVERY_AUDIO_CODEC_Exported_Constants
-  * @{
-  */ 
+ * @{
+ */
 
 /*------------------------------------
              CONFIGURATION: Audio Codec Driver Configuration parameters
@@ -70,8 +70,8 @@
 
 /* For the DMA modes select the interrupt that will be used */
 #define AUDIO_MAL_DMA_IT_TC_EN        /* Uncomment this line to enable DMA Transfer Complete interrupt */
-/* #define AUDIO_MAL_DMA_IT_HT_EN */  /* Uncomment this line to enable DMA Half Transfer Complete interrupt */
-/* #define AUDIO_MAL_DMA_IT_TE_EN */  /* Uncomment this line to enable DMA Transfer Error interrupt */
+/* #define AUDIO_MAL_DMA_IT_HT_EN */ /* Uncomment this line to enable DMA Half Transfer Complete interrupt */
+/* #define AUDIO_MAL_DMA_IT_TE_EN */ /* Uncomment this line to enable DMA Transfer Error interrupt */
 
 /* Select the interrupt preemption priority and subpriority for the DMA interrupt */
 #define EVAL_AUDIO_IRQ_PREPRIO           0   /* Select the preemption priority level(0 is the highest) */
@@ -81,7 +81,7 @@
    function implemented in stm32f4_discovery_audio_codec.c file.
    Codec_TIMEOUT_UserCallback() function is called whenever a timeout condition 
    occurs during communication (waiting on an event that doesn't occur, bus 
-   errors, busy devices ...). */   
+   errors, busy devices ...). */
 /* #define USE_DEFAULT_TIMEOUT_CALLBACK */
 
 /* Enable this define to use the I2S DMA for writing into DAC register */
@@ -96,7 +96,7 @@
    Make sure that this define is not already declared in other files (ie. 
   stm322xg_eval.h file). It can be used in parallel by other modules. */
 #ifndef I2C_SPEED
- #define I2C_SPEED                        100000
+#define I2C_SPEED                        100000
 #endif /* I2C_SPEED */
 
 /* Uncomment defines below to select standard for audio communication between 
@@ -122,7 +122,7 @@
 #define AUDIO_RESET_GPIO_CLK           RCC_AHB1Periph_GPIOD  
 #define AUDIO_RESET_PIN                GPIO_Pin_4    
 #define AUDIO_RESET_GPIO               GPIOD 
-                 
+
 /* I2S peripheral configuration defines */
 #define CODEC_I2S                      SPI3
 #define CODEC_I2S_CLK                  RCC_APB1Periph_SPI3
@@ -144,44 +144,44 @@
 #define Audio_I2S_IRQHandler           SPI3_IRQHandler
 
 
- #define AUDIO_MAL_DMA_PERIPH_DATA_SIZE DMA_PeripheralDataSize_HalfWord
- #define AUDIO_MAL_DMA_MEM_DATA_SIZE    DMA_MemoryDataSize_HalfWord
- #define DMA_MAX_SZE                    0xFFFF
+#define AUDIO_MAL_DMA_PERIPH_DATA_SIZE DMA_PeripheralDataSize_HalfWord
+#define AUDIO_MAL_DMA_MEM_DATA_SIZE    DMA_MemoryDataSize_HalfWord
+#define DMA_MAX_SZE                    0xFFFF
 
 
- #define DAC_DHR12L1_ADDRESS            0x4000740C
- #define DAC_DHR12R1_ADDRESS            0x40007408
- #define DAC_DHR8R1_ADDRESS             0x40007410
- #define AUDIO_DAC_CHANNEL              DAC_Channel_1
+#define DAC_DHR12L1_ADDRESS            0x4000740C
+#define DAC_DHR12R1_ADDRESS            0x40007408
+#define DAC_DHR8R1_ADDRESS             0x40007410
+#define AUDIO_DAC_CHANNEL              DAC_Channel_1
 
- /* I2S DMA Stream definitions */
- #define AUDIO_I2S_DMA_CLOCK            RCC_AHB1Periph_DMA1
- #define AUDIO_I2S_DMA_STREAM           DMA1_Stream7
- #define AUDIO_I2S_DMA_DREG             CODEC_I2S_ADDRESS
- #define AUDIO_I2S_DMA_CHANNEL          DMA_Channel_0
- #define AUDIO_I2S_DMA_IRQ              DMA1_Stream7_IRQn
- #define AUDIO_I2S_DMA_FLAG_TC          DMA_FLAG_TCIF7
- #define AUDIO_I2S_DMA_FLAG_HT          DMA_FLAG_HTIF7
- #define AUDIO_I2S_DMA_FLAG_FE          DMA_FLAG_FEIF7
- #define AUDIO_I2S_DMA_FLAG_TE          DMA_FLAG_TEIF7
- #define AUDIO_I2S_DMA_FLAG_DME         DMA_FLAG_DMEIF7
+/* I2S DMA Stream definitions */
+#define AUDIO_I2S_DMA_CLOCK            RCC_AHB1Periph_DMA1
+#define AUDIO_I2S_DMA_STREAM           DMA1_Stream7
+#define AUDIO_I2S_DMA_DREG             CODEC_I2S_ADDRESS
+#define AUDIO_I2S_DMA_CHANNEL          DMA_Channel_0
+#define AUDIO_I2S_DMA_IRQ              DMA1_Stream7_IRQn
+#define AUDIO_I2S_DMA_FLAG_TC          DMA_FLAG_TCIF7
+#define AUDIO_I2S_DMA_FLAG_HT          DMA_FLAG_HTIF7
+#define AUDIO_I2S_DMA_FLAG_FE          DMA_FLAG_FEIF7
+#define AUDIO_I2S_DMA_FLAG_TE          DMA_FLAG_TEIF7
+#define AUDIO_I2S_DMA_FLAG_DME         DMA_FLAG_DMEIF7
 
- #define Audio_MAL_I2S_IRQHandler       DMA1_Stream7_IRQHandler
+#define Audio_MAL_I2S_IRQHandler       DMA1_Stream7_IRQHandler
 
 
- /* DAC DMA Stream definitions */
- #define AUDIO_DAC_DMA_CLOCK            RCC_AHB1Periph_DMA1
- #define AUDIO_DAC_DMA_STREAM           DMA1_Stream0
- #define AUDIO_DAC_DMA_DREG             DAC_DHR12L1_ADDRESS
- #define AUDIO_DAC_DMA_CHANNEL          DMA_Channel_0
- #define AUDIO_DAC_DMA_IRQ              DMA1_Stream0_IRQn
- #define AUDIO_DAC_DMA_FLAG_TC          DMA_FLAG_TCIF0
- #define AUDIO_DAC_DMA_FLAG_HT          DMA_FLAG_HTIF0
- #define AUDIO_DAC_DMA_FLAG_FE          DMA_FLAG_FEIF0
- #define AUDIO_DAC_DMA_FLAG_TE          DMA_FLAG_TEIF0
- #define AUDIO_DAC_DMA_FLAG_DME         DMA_FLAG_DMEIF0
+/* DAC DMA Stream definitions */
+#define AUDIO_DAC_DMA_CLOCK            RCC_AHB1Periph_DMA1
+#define AUDIO_DAC_DMA_STREAM           DMA1_Stream0
+#define AUDIO_DAC_DMA_DREG             DAC_DHR12L1_ADDRESS
+#define AUDIO_DAC_DMA_CHANNEL          DMA_Channel_0
+#define AUDIO_DAC_DMA_IRQ              DMA1_Stream0_IRQn
+#define AUDIO_DAC_DMA_FLAG_TC          DMA_FLAG_TCIF0
+#define AUDIO_DAC_DMA_FLAG_HT          DMA_FLAG_HTIF0
+#define AUDIO_DAC_DMA_FLAG_FE          DMA_FLAG_FEIF0
+#define AUDIO_DAC_DMA_FLAG_TE          DMA_FLAG_TEIF0
+#define AUDIO_DAC_DMA_FLAG_DME         DMA_FLAG_DMEIF0
 
- #define Audio_MAL_DAC_IRQHandler       DMA1_Stream0_IRQHandler
+#define Audio_MAL_DAC_IRQHandler       DMA1_Stream0_IRQHandler
 
 
 /* I2C peripheral configuration defines (control interface of the audio codec) */
@@ -199,7 +199,7 @@
    not based on accurate values, they just guarantee that the application will 
    not remain stuck if the I2C communication is corrupted.
    You may modify these timeout values depending on CPU frequency and application
-   conditions (interrupts routines ...). */   
+   conditions (interrupts routines ...). */
 #define CODEC_FLAG_TIMEOUT             ((uint32_t)0x1000)
 #define CODEC_LONG_TIMEOUT             ((uint32_t)(300 * CODEC_FLAG_TIMEOUT))
 /*----------------------------------------------------------------------------*/
@@ -234,22 +234,22 @@
 #define AUDIO_MUTE_OFF                0
 /*----------------------------------------------------------------------------*/
 /**
-  * @}
-  */ 
+ * @}
+ */
 
 /** @defgroup STM32F4_DISCOVERY_AUDIO_CODEC_Exported_Macros
-  * @{
-  */ 
+ * @{
+ */
 #define VOLUME_CONVERT(x)    ((Volume > 100)? 100:((uint8_t)((Volume * 255) / 100)))
 #define DMA_MAX(x)           (((x) <= DMA_MAX_SZE)? (x):DMA_MAX_SZE)
 
 /**
-  * @}
-  */ 
+ * @}
+ */
 
 /** @defgroup STM32F4_DISCOVERY_AUDIO_CODEC_Exported_Functions
-  * @{
-  */ 
+ * @{
+ */
 void EVAL_AUDIO_SetAudioInterface(uint32_t Interface);
 uint32_t EVAL_AUDIO_Init(uint16_t OutputDevice, uint8_t Volume, uint32_t AudioFreq);
 uint32_t EVAL_AUDIO_DeInit(void);
@@ -294,20 +294,20 @@ uint32_t Codec_TIMEOUT_UserCallback(void);
 #endif /* __STM32F4_DISCOVERY_AUDIOCODEC_H */
 
 /**
-  * @}
-  */ 
+ * @}
+ */
 
 /**
-  * @}
-  */ 
+ * @}
+ */
 
 /**
-  * @}
-  */
+ * @}
+ */
 
 /**
-  * @}
-  */ 
-   
+ * @}
+ */
+
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

@@ -1,27 +1,27 @@
 /**
-*****************************************************************************
-**
-**  File        : stm32f4xx_conf.h
-**
-**  Abstract    : STM32F4xx library configuration file 
-**
-**  Environment : Atollic TrueSTUDIO(R)
-**                STMicroelectronics STM32F4xx Standard Peripherals Library
-**
-**  Distribution: The file is distributed “as is,” without any warranty
-**                of any kind.
-**
-**  (c)Copyright Atollic AB.
-**  You may use this file as-is or modify it according to the needs of your
-**  project. Distribution of this file (unmodified or modified) is not
-**  permitted. Atollic AB permit registered Atollic TrueSTUDIO(R) users the
-**  rights to distribute the assembled, compiled & linked contents of this
-**  file as part of an application binary file, provided that it is built
-**  using the Atollic TrueSTUDIO(R) toolchain.
-**
-**
-*****************************************************************************
-*/
+ *****************************************************************************
+ **
+ **  File        : stm32f4xx_conf.h
+ **
+ **  Abstract    : STM32F4xx library configuration file 
+ **
+ **  Environment : Atollic TrueSTUDIO(R)
+ **                STMicroelectronics STM32F4xx Standard Peripherals Library
+ **
+ **  Distribution: The file is distributed ï¿½as is,ï¿½ without any warranty
+ **                of any kind.
+ **
+ **  (c)Copyright Atollic AB.
+ **  You may use this file as-is or modify it according to the needs of your
+ **  project. Distribution of this file (unmodified or modified) is not
+ **  permitted. Atollic AB permit registered Atollic TrueSTUDIO(R) users the
+ **  rights to distribute the assembled, compiled & linked contents of this
+ **  file as part of an application binary file, provided that it is built
+ **  using the Atollic TrueSTUDIO(R) toolchain.
+ **
+ **
+ *****************************************************************************
+ */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F4xx_CONF_H
@@ -73,18 +73,18 @@
 #ifdef  USE_FULL_ASSERT
 
 /**
-  * @brief  The assert_param macro is used for function's parameters check.
-  * @param  expr: If expr is false, it calls assert_failed function
-  *   which reports the name of the source file and the source
-  *   line number of the call that failed. 
-  *   If expr is true, it returns no value.
-  * @retval None
-  */
-  #define assert_param(expr) ((expr) ? (void)0 : assert_failed((uint8_t *)__FILE__, __LINE__))
+ * @brief  The assert_param macro is used for function's parameters check.
+ * @param  expr: If expr is false, it calls assert_failed function
+ *   which reports the name of the source file and the source
+ *   line number of the call that failed. 
+ *   If expr is true, it returns no value.
+ * @retval None
+ */
+#define assert_param(expr) ((expr) ? (void)0 : assert_failed((uint8_t *)__FILE__, __LINE__))
 /* Exported functions ------------------------------------------------------- */
-  void assert_failed(uint8_t* file, uint32_t line);
+void assert_failed(uint8_t* file, uint32_t line);
 #else
-  #define assert_param(expr) ((void)0)
+#define assert_param(expr) ((void)0)
 #endif /* USE_FULL_ASSERT */
 
 #endif /* __STM32F45x_CONF_H */

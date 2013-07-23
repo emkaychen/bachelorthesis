@@ -7,10 +7,10 @@ uint8_t putchar(int ch) {
     return ch;
 }
 
-void initSerial(){
+void initSerial() {
     SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOA, EXTI_PinSource0);
 
-    
+
 
     USART_InitTypeDef USART_InitStructure;
 

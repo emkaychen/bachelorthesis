@@ -12,6 +12,7 @@ SOURCES += src/system_stm32f4xx.c
 SOURCES += src/printf-stdarg.c
 SOURCES += src/pwrtrain_steering.c
 SOURCES += src/communication.c
+SOURCES += src/accelerometer.c
 
 SOURCES += Utilities/STM32F4-Discovery/stm32f4_discovery.c
 
@@ -53,6 +54,8 @@ SOURCES += Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_syscfg.c
 SOURCES += Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_tim.c
 SOURCES += Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_usart.c
 SOURCES += Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_wwdg.c
+
+SOURCES += Utilities/STM32F4-Discovery/stm32f4_discovery_lis302dl.c
 
 OBJECTS = $(addprefix $(OBJDIR)/,$(addsuffix .o,$(basename $(SOURCES))))
 

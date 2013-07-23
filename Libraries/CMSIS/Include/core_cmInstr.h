@@ -29,13 +29,13 @@
 /** \defgroup CMSIS_Core_InstructionInterface CMSIS Core Instruction Interface
   Access to dedicated instructions
   @{
-*/
+ */
 
 #if   defined ( __CC_ARM ) /*------------------RealView Compiler -----------------*/
 /* ARM armcc specific functions */
 
 #if (__ARMCC_VERSION < 400677)
-  #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
+#error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 #endif
 
 
@@ -103,7 +103,6 @@
  */
 #define __REV                             __rev
 
-
 /** \brief  Reverse byte order (16 bit)
 
     This function reverses the byte order in two unsigned short values.
@@ -111,12 +110,10 @@
     \param [in]    value  Value to reverse
     \return               Reversed value
  */
-static __INLINE __ASM uint32_t __REV16(uint32_t value)
-{
-  rev16 r0, r0
-  bx lr
+static __INLINE __ASM uint32_t __REV16(uint32_t value) {
+    rev16 r0, r0
+    bx lr
 }
-
 
 /** \brief  Reverse byte order in signed short value
 
@@ -125,10 +122,9 @@ static __INLINE __ASM uint32_t __REV16(uint32_t value)
     \param [in]    value  Value to reverse
     \return               Reversed value
  */
-static __INLINE __ASM int32_t __REVSH(int32_t value)
-{
-  revsh r0, r0
-  bx lr
+static __INLINE __ASM int32_t __REVSH(int32_t value) {
+    revsh r0, r0
+    bx lr
 }
 
 
@@ -266,43 +262,35 @@ static __INLINE __ASM int32_t __REVSH(int32_t value)
 
     No Operation does nothing. This instruction can be used for code alignment purposes.
  */
-__attribute__( ( always_inline ) ) static __INLINE void __NOP(void)
-{
-  __ASM volatile ("nop");
+__attribute__((always_inline)) static __INLINE void __NOP(void) {
+    __ASM volatile ("nop");
 }
-
 
 /** \brief  Wait For Interrupt
 
     Wait For Interrupt is a hint instruction that suspends execution
     until one of a number of events occurs.
  */
-__attribute__( ( always_inline ) ) static __INLINE void __WFI(void)
-{
-  __ASM volatile ("wfi");
+__attribute__((always_inline)) static __INLINE void __WFI(void) {
+    __ASM volatile ("wfi");
 }
-
 
 /** \brief  Wait For Event
 
     Wait For Event is a hint instruction that permits the processor to enter
     a low-power state until one of a number of events occurs.
  */
-__attribute__( ( always_inline ) ) static __INLINE void __WFE(void)
-{
-  __ASM volatile ("wfe");
+__attribute__((always_inline)) static __INLINE void __WFE(void) {
+    __ASM volatile ("wfe");
 }
-
 
 /** \brief  Send Event
 
     Send Event is a hint instruction. It causes an event to be signaled to the CPU.
  */
-__attribute__( ( always_inline ) ) static __INLINE void __SEV(void)
-{
-  __ASM volatile ("sev");
+__attribute__((always_inline)) static __INLINE void __SEV(void) {
+    __ASM volatile ("sev");
 }
-
 
 /** \brief  Instruction Synchronization Barrier
 
@@ -310,33 +298,27 @@ __attribute__( ( always_inline ) ) static __INLINE void __SEV(void)
     so that all instructions following the ISB are fetched from cache or 
     memory, after the instruction has been completed.
  */
-__attribute__( ( always_inline ) ) static __INLINE void __ISB(void)
-{
-  __ASM volatile ("isb");
+__attribute__((always_inline)) static __INLINE void __ISB(void) {
+    __ASM volatile ("isb");
 }
-
 
 /** \brief  Data Synchronization Barrier
 
     This function acts as a special kind of Data Memory Barrier. 
     It completes when all explicit memory accesses before this instruction complete.
  */
-__attribute__( ( always_inline ) ) static __INLINE void __DSB(void)
-{
-  __ASM volatile ("dsb");
+__attribute__((always_inline)) static __INLINE void __DSB(void) {
+    __ASM volatile ("dsb");
 }
-
 
 /** \brief  Data Memory Barrier
 
     This function ensures the apparent order of the explicit memory operations before 
     and after the instruction, without ensuring their completion.
  */
-__attribute__( ( always_inline ) ) static __INLINE void __DMB(void)
-{
-  __ASM volatile ("dmb");
+__attribute__((always_inline)) static __INLINE void __DMB(void) {
+    __ASM volatile ("dmb");
 }
-
 
 /** \brief  Reverse byte order (32 bit)
 
@@ -345,14 +327,12 @@ __attribute__( ( always_inline ) ) static __INLINE void __DMB(void)
     \param [in]    value  Value to reverse
     \return               Reversed value
  */
-__attribute__( ( always_inline ) ) static __INLINE uint32_t __REV(uint32_t value)
-{
-  uint32_t result;
-  
-  __ASM volatile ("rev %0, %1" : "=r" (result) : "r" (value) );
-  return(result);
-}
+__attribute__((always_inline)) static __INLINE uint32_t __REV(uint32_t value) {
+    uint32_t result;
 
+    __ASM volatile ("rev %0, %1" : "=r" (result) : "r" (value));
+    return (result);
+}
 
 /** \brief  Reverse byte order (16 bit)
 
@@ -361,14 +341,12 @@ __attribute__( ( always_inline ) ) static __INLINE uint32_t __REV(uint32_t value
     \param [in]    value  Value to reverse
     \return               Reversed value
  */
-__attribute__( ( always_inline ) ) static __INLINE uint32_t __REV16(uint32_t value)
-{
-  uint32_t result;
-  
-  __ASM volatile ("rev16 %0, %1" : "=r" (result) : "r" (value) );
-  return(result);
-}
+__attribute__((always_inline)) static __INLINE uint32_t __REV16(uint32_t value) {
+    uint32_t result;
 
+    __ASM volatile ("rev16 %0, %1" : "=r" (result) : "r" (value));
+    return (result);
+}
 
 /** \brief  Reverse byte order in signed short value
 
@@ -377,12 +355,11 @@ __attribute__( ( always_inline ) ) static __INLINE uint32_t __REV16(uint32_t val
     \param [in]    value  Value to reverse
     \return               Reversed value
  */
-__attribute__( ( always_inline ) ) static __INLINE int32_t __REVSH(int32_t value)
-{
-  uint32_t result;
-  
-  __ASM volatile ("revsh %0, %1" : "=r" (result) : "r" (value) );
-  return(result);
+__attribute__((always_inline)) static __INLINE int32_t __REVSH(int32_t value) {
+    uint32_t result;
+
+    __ASM volatile ("revsh %0, %1" : "=r" (result) : "r" (value));
+    return (result);
 }
 
 
@@ -395,14 +372,12 @@ __attribute__( ( always_inline ) ) static __INLINE int32_t __REVSH(int32_t value
     \param [in]    value  Value to reverse
     \return               Reversed value
  */
-__attribute__( ( always_inline ) ) static __INLINE uint32_t __RBIT(uint32_t value)
-{
-  uint32_t result;
-  
-   __ASM volatile ("rbit %0, %1" : "=r" (result) : "r" (value) );
-   return(result);
-}
+__attribute__((always_inline)) static __INLINE uint32_t __RBIT(uint32_t value) {
+    uint32_t result;
 
+    __ASM volatile ("rbit %0, %1" : "=r" (result) : "r" (value));
+    return (result);
+}
 
 /** \brief  LDR Exclusive (8 bit)
 
@@ -411,14 +386,12 @@ __attribute__( ( always_inline ) ) static __INLINE uint32_t __RBIT(uint32_t valu
     \param [in]    ptr  Pointer to data
     \return             value of type uint8_t at (*ptr)
  */
-__attribute__( ( always_inline ) ) static __INLINE uint8_t __LDREXB(volatile uint8_t *addr)
-{
+__attribute__((always_inline)) static __INLINE uint8_t __LDREXB(volatile uint8_t *addr) {
     uint8_t result;
-  
-   __ASM volatile ("ldrexb %0, [%1]" : "=r" (result) : "r" (addr) );
-   return(result);
-}
 
+    __ASM volatile ("ldrexb %0, [%1]" : "=r" (result) : "r" (addr));
+    return (result);
+}
 
 /** \brief  LDR Exclusive (16 bit)
 
@@ -427,14 +400,12 @@ __attribute__( ( always_inline ) ) static __INLINE uint8_t __LDREXB(volatile uin
     \param [in]    ptr  Pointer to data
     \return        value of type uint16_t at (*ptr)
  */
-__attribute__( ( always_inline ) ) static __INLINE uint16_t __LDREXH(volatile uint16_t *addr)
-{
+__attribute__((always_inline)) static __INLINE uint16_t __LDREXH(volatile uint16_t *addr) {
     uint16_t result;
-  
-   __ASM volatile ("ldrexh %0, [%1]" : "=r" (result) : "r" (addr) );
-   return(result);
-}
 
+    __ASM volatile ("ldrexh %0, [%1]" : "=r" (result) : "r" (addr));
+    return (result);
+}
 
 /** \brief  LDR Exclusive (32 bit)
 
@@ -443,14 +414,12 @@ __attribute__( ( always_inline ) ) static __INLINE uint16_t __LDREXH(volatile ui
     \param [in]    ptr  Pointer to data
     \return        value of type uint32_t at (*ptr)
  */
-__attribute__( ( always_inline ) ) static __INLINE uint32_t __LDREXW(volatile uint32_t *addr)
-{
+__attribute__((always_inline)) static __INLINE uint32_t __LDREXW(volatile uint32_t *addr) {
     uint32_t result;
-  
-   __ASM volatile ("ldrex %0, [%1]" : "=r" (result) : "r" (addr) );
-   return(result);
-}
 
+    __ASM volatile ("ldrex %0, [%1]" : "=r" (result) : "r" (addr));
+    return (result);
+}
 
 /** \brief  STR Exclusive (8 bit)
 
@@ -461,14 +430,12 @@ __attribute__( ( always_inline ) ) static __INLINE uint32_t __LDREXW(volatile ui
     \return          0  Function succeeded
     \return          1  Function failed
  */
-__attribute__( ( always_inline ) ) static __INLINE uint32_t __STREXB(uint8_t value, volatile uint8_t *addr)
-{
-   uint32_t result;
-  
-   __ASM volatile ("strexb %0, %2, [%1]" : "=r" (result) : "r" (addr), "r" (value) );
-   return(result);
-}
+__attribute__((always_inline)) static __INLINE uint32_t __STREXB(uint8_t value, volatile uint8_t *addr) {
+    uint32_t result;
 
+    __ASM volatile ("strexb %0, %2, [%1]" : "=r" (result) : "r" (addr), "r" (value));
+    return (result);
+}
 
 /** \brief  STR Exclusive (16 bit)
 
@@ -479,14 +446,12 @@ __attribute__( ( always_inline ) ) static __INLINE uint32_t __STREXB(uint8_t val
     \return          0  Function succeeded
     \return          1  Function failed
  */
-__attribute__( ( always_inline ) ) static __INLINE uint32_t __STREXH(uint16_t value, volatile uint16_t *addr)
-{
-   uint32_t result;
-  
-   __ASM volatile ("strexh %0, %2, [%1]" : "=r" (result) : "r" (addr), "r" (value) );
-   return(result);
-}
+__attribute__((always_inline)) static __INLINE uint32_t __STREXH(uint16_t value, volatile uint16_t *addr) {
+    uint32_t result;
 
+    __ASM volatile ("strexh %0, %2, [%1]" : "=r" (result) : "r" (addr), "r" (value));
+    return (result);
+}
 
 /** \brief  STR Exclusive (32 bit)
 
@@ -497,23 +462,20 @@ __attribute__( ( always_inline ) ) static __INLINE uint32_t __STREXH(uint16_t va
     \return          0  Function succeeded
     \return          1  Function failed
  */
-__attribute__( ( always_inline ) ) static __INLINE uint32_t __STREXW(uint32_t value, volatile uint32_t *addr)
-{
-   uint32_t result;
-  
-   __ASM volatile ("strex %0, %2, [%1]" : "=r" (result) : "r" (addr), "r" (value) );
-   return(result);
-}
+__attribute__((always_inline)) static __INLINE uint32_t __STREXW(uint32_t value, volatile uint32_t *addr) {
+    uint32_t result;
 
+    __ASM volatile ("strex %0, %2, [%1]" : "=r" (result) : "r" (addr), "r" (value));
+    return (result);
+}
 
 /** \brief  Remove the exclusive lock
 
     This function removes the exclusive lock which is created by LDREX.
 
  */
-__attribute__( ( always_inline ) ) static __INLINE void __CLREX(void)
-{
-  __ASM volatile ("clrex");
+__attribute__((always_inline)) static __INLINE void __CLREX(void) {
+    __ASM volatile ("clrex");
 }
 
 
@@ -548,7 +510,6 @@ __attribute__( ( always_inline ) ) static __INLINE void __CLREX(void)
   __RES; \
  })
 
-
 /** \brief  Count leading zeros
 
     This function counts the number of leading zeros of a data value.
@@ -556,12 +517,11 @@ __attribute__( ( always_inline ) ) static __INLINE void __CLREX(void)
     \param [in]  value  Value to count the leading zeros
     \return             number of leading zeros in value
  */
-__attribute__( ( always_inline ) ) static __INLINE uint8_t __CLZ(uint32_t value)
-{
-  uint8_t result;
-  
-  __ASM volatile ("clz %0, %1" : "=r" (result) : "r" (value) );
-  return(result);
+__attribute__((always_inline)) static __INLINE uint8_t __CLZ(uint32_t value) {
+    uint8_t result;
+
+    __ASM volatile ("clz %0, %1" : "=r" (result) : "r" (value));
+    return (result);
 }
 
 #endif /* (__CORTEX_M >= 0x03) */

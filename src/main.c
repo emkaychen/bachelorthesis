@@ -155,6 +155,8 @@ to be available here. */
 #include "stm32f4xx_gpio.h"
 #include "pwrtrain_steering.h"
 #include "communication.h"
+#include "accelerometer.h"
+#include "stm32f4_discovery_lis302dl.h"
 /* Priorities at which the tasks are created.  The event semaphore task is
 given the maximum priority of ( configMAX_PRIORITIES - 1 ) to ensure it runs as
 soon as the semaphore is given. */
@@ -186,21 +188,42 @@ static void prvSetupHardware(void);
 
 
 xTaskHandle xLEDHandle;
+xTaskHandle xSteeringHandle;
+xTaskHandle xDrivingHandle;
+xTaskHandle xAccelerometerHandle;
+GPIO_InitTypeDef GPIO_InitStructure;
 
 void vLEDTask(void *pvParameters) {
-    const portTickType xDelay = 2000 / portTICK_RATE_MS;
+    const portTickType xDelay = 100 / portTICK_RATE_MS;
     portTickType xLastWakeTime = xTaskGetTickCount();
     STM_EVAL_LEDInit(LED6);
     STM_EVAL_LEDInit(LED4);
     STM_EVAL_LEDOff(LED6);
     STM_EVAL_LEDOff(LED4);
-    STM_EVAL_PBGetState(BUTTON_USER);
+    debug_print("LED Task started.\n\r");
+
+
+    //    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+    //    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+    //    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+    //    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    //    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    //    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
+    //    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+
+    //    
+    //    uint8_t inPin1 = 0;
     for (;;) {
+        //        inPin1 = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4);
+        //        printf("GPIO: %d\n\r", inPin1);
         STM_EVAL_LEDToggle(LED6);
         STM_EVAL_LEDToggle(LED4);
         vTaskDelayUntil(&xLastWakeTime, xDelay);
     }
 }
+
+
 
 /* The semaphore (in this case binary) that is used by the FreeRTOS tick hook
  * function and the event semaphore task.
@@ -209,62 +232,50 @@ static xSemaphoreHandle xEventSemaphore = NULL;
 
 /* The counters used by the various examples.  The usage is described in the
  * comments at the top of this file.
- */
+ 
 static volatile uint32_t ulCountOfTimerCallbackExecutions = 0;
 static volatile uint32_t ulCountOfItemsReceivedOnQueue = 0;
 static volatile uint32_t ulCountOfReceivedSemaphores = 0;
-
+ */
 
 extern int printf(const char *format, ...);
 
-/*-----------------------------------------------------------*/
 
-void EXTI0_IRQHandler(void) //EXTI0 ISR
-{
-    printf("EXTI0_IRQ\n\r");
-    //USART_SendData(EVAL_COM1, 'a');
-    if (EXTI_GetITStatus(EXTI_Line0) != RESET) //check if EXTI line is asserted
-    {
-        EXTI_ClearFlag(EXTI_Line0); //clear interrupt
-        //Enter your code here
-        STM_EVAL_LEDToggle(LED5);
-        SetTIM1Duty(4700);
-    }
-}
 RC_STATE_T rc_state;
 
 int main(void) {
     /* Configure the system ready to run the demo.  The clock configuration
     can be done here if it was not done before main() was called. */
     prvSetupHardware();
-    
-    rc_state.driving_direction = STOPPED;
+
+    rc_state.driving_direction = PWRTRAIN_DIR_STOPPED;
     rc_state.steering_direction = STEERING_DIR_NEUTRAL;
-//    STM_EVAL_LEDInit(LED5);
-//    
-//    NVIC_InitTypeDef NVIC_InitStructure;
-//    EXTI_InitTypeDef EXTI_InitStructure;
-//
-//    EXTI_InitStructure.EXTI_Line = EXTI_Line0;
-//    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-//    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
-//    EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-//    EXTI_Init(&EXTI_InitStructure);
-//
-//    NVIC_InitStructure.NVIC_IRQChannel = EXTI0_IRQn;
-//    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;
-//    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x01;
-//    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-//    NVIC_Init(&NVIC_InitStructure);
-//    
-    initSerial();
-    initPWMOutput();
-    initPWMInput();
+    rc_state.remote = REMOTE_INAKTIVE;
+
+
+
+    //  
+    if (DEBUG) {
+        initSerial();
+        printf("\n\n\r");
+        debug_print("Serial interface initialized.\n\r");
+    }
+    //        initPWMOutput();
+    //        initPWMInput();
+    initAccelerometer();
+    debug_print("Accelerometer initialized.\n\r");
 
     xTaskCreate(&vLEDTask, (const signed char *) "LED Task", 200, NULL,
-            1, &xLEDHandle);
+            0, &xLEDHandle);
 
+    xTaskCreate(&vAccelerometerTask, (const signed char *) "Accelerometer Task", 200, NULL,
+            TASK_ACCELEROMETER_PRIO, &xAccelerometerHandle);
 
+    //        xTaskCreate(&vSteeringTask, (const signed char *) "Steering Task", 200, NULL,
+    //                TASK_STEERING_PRIO, &xSteeringHandle);
+    //    
+    //    xTaskCreate(&vDrivingTask, (const signed char *) "Driving Task", 200, NULL,
+    //            TASK_DRIVING_PRIO, &xDrivingHandle);
     /* Start the tasks and timer running. */
     vTaskStartScheduler();
 
@@ -275,7 +286,6 @@ int main(void) {
     for more details.  http://www.freertos.org/a00111.html */
     for (;;);
 }
-
 
 /*-----------------------------------------------------------*/
 
